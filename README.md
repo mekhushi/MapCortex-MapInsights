@@ -94,6 +94,3 @@ Contributions are welcome! Here's how you can contribute:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contact
-
-Khushi singh - [mekhushi](https://github.com/mekhushi) - mekhushisingh27@gmail.com
