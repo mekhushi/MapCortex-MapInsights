@@ -5,7 +5,6 @@ from folium.plugins import MarkerCluster, HeatMap
 from streamlit_folium import st_folium
 import plotly.express as px
 
-# --- PAGE CONFIG ---
 st.set_page_config(
     page_title="MapCortex",
     layout="wide",
@@ -17,10 +16,8 @@ st.sidebar.title("🗺 MapCortex Dashboard")
 st.sidebar.markdown("Interactive data visualization with maps & charts")
 st.sidebar.markdown("---")
 
-# Page navigation
 page = st.sidebar.selectbox("📄 Select Page", ["Home", "Map View", "Charts & Analytics", "Dataset Summary", "About / Help"])
 
-# Dataset upload
 st.sidebar.subheader("📂 Upload CSV")
 uploaded_file = st.sidebar.file_uploader("Choose CSV file", type=["csv"])
 df = None
@@ -28,7 +25,6 @@ if uploaded_file:
     df = pd.read_csv(uploaded_file)
     st.sidebar.success(f"Loaded {df.shape[0]} rows × {df.shape[1]} columns")
 
-# Filters (collapsible)
 if df is not None:
     with st.sidebar.expander("🔍 Filter Data", expanded=False):
         numeric_cols = df.select_dtypes(include='number').columns.tolist()
@@ -72,7 +68,7 @@ if df is not None and 'apply_filters' in locals() and apply_filters:
 if page == "Home":
     st.title("🏠 Welcome to MapCortex")
     from PIL import Image
-    img = Image.open(r"C:\Users\Khushi Singh\Desktop\MapCortex\assets\pexels-pixabay-265087.jpg")
+    img = Image.open(r"assets/pexels-pixabay-265087.jpg")
     st.image(img, use_container_width=True)
 
     st.markdown("""
@@ -153,3 +149,4 @@ elif page == "About / Help":
     - Filter data dynamically
     - Explore maps, heatmaps, charts, and summaries
     """)
+
