@@ -5,12 +5,12 @@ from PIL import Image
 import os
 
 st.set_page_config(
-    page_title="DataMap",
+    page_title="Mapcortex",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-st.sidebar.title("🗺 DataMap Dashboard")
+st.sidebar.title("🗺 Mapcortex Dashboard")
 st.sidebar.markdown("Interactive data visualization with charts & dataset summary")
 st.sidebar.markdown("---")
 
@@ -69,7 +69,7 @@ if df is not None and 'apply_filters' in locals() and apply_filters:
     st.success(f"Filtered data: {df.shape[0]} rows × {df.shape[1]} columns")
 
 if page == "Home":
-    st.title("🏠 Welcome to DataMap")
+    st.title("🏠 Welcome to Mapcortex")
     img_path = os.path.join("assets", "pexels-pixabay-265087.jpg")
     if os.path.exists(img_path):
         img = Image.open(img_path)
@@ -129,11 +129,12 @@ elif page == "Dataset Summary":
 elif page == "About / Help":
     st.title("ℹ About DataMap")
     st.markdown("""
-    **DataMap** is an interactive dashboard for numeric data visualization.
+    **Mapcortex** is an interactive dashboard for numeric data visualization.
 
     - Upload CSV files and explore datasets
     - Apply dynamic numeric and categorical filters
     - Visualize data through interactive charts
     - Quickly gain insights from your data
     """)
+
 
