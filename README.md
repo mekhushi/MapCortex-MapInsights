@@ -30,9 +30,6 @@ MapCortex-MapInsights is a powerful web application designed to simplify data an
 - **Dynamic Charts**:
     - Generate a variety of chart types, including line charts, bar charts, scatter plots, histograms, and pie charts, to visualize trends and patterns.
     - Customize chart appearance with options for colors, labels, and tooltips.
-- **Geospatial Visualization**:
-    - Create interactive maps to visualize location-based data using markers, heatmaps, and choropleth maps.
-    - Supports zooming, panning, and other map interactions for detailed exploration.
 - **Data Transformation**:
     - Basic data transformation capabilities such as column renaming, data type conversion, and aggregation.
 - **Exporting**:
