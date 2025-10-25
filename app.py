@@ -4,7 +4,10 @@ import folium
 from folium.plugins import MarkerCluster, HeatMap
 from streamlit_folium import st_folium
 import plotly.express as px
+from PIL import Image
+import os
 
+# --- PAGE CONFIG ---
 st.set_page_config(
     page_title="MapCortex",
     layout="wide",
@@ -12,12 +15,17 @@ st.set_page_config(
 )
 
 # --- SIDEBAR ---
-st.sidebar.title("🗺 MapCortex Dashboard")
+st.sidebar.title("🗺 DataMap Dashboard")
 st.sidebar.markdown("Interactive data visualization with maps & charts")
 st.sidebar.markdown("---")
 
-page = st.sidebar.selectbox("📄 Select Page", ["Home", "Map View", "Charts & Analytics", "Dataset Summary", "About / Help"])
+# Page navigation
+page = st.sidebar.selectbox(
+    "📄 Select Page",
+    ["Home", "Map View", "Charts & Analytics", "Dataset Summary", "About / Help"]
+)
 
+# Dataset upload
 st.sidebar.subheader("📂 Upload CSV")
 uploaded_file = st.sidebar.file_uploader("Choose CSV file", type=["csv"])
 df = None
@@ -25,19 +33,24 @@ if uploaded_file:
     df = pd.read_csv(uploaded_file)
     st.sidebar.success(f"Loaded {df.shape[0]} rows × {df.shape[1]} columns")
 
+# --- FILTERS ---
+numeric_filters = {}
+cat_filters = {}
+
 if df is not None:
     with st.sidebar.expander("🔍 Filter Data", expanded=False):
         numeric_cols = df.select_dtypes(include='number').columns.tolist()
         cat_cols = df.select_dtypes(include='object').columns.tolist()
 
-        numeric_filters = {}
-        cat_filters = {}
-
         if numeric_cols:
             st.markdown("**Numeric Filters**")
             for col in numeric_cols:
-                min_val, max_val = float(df[col].min()), float(df[col].max())
-                numeric_filters[col] = st.slider(f"{col}", min_val, max_val, (min_val, max_val))
+                min_val, max_val = round(float(df[col].min()), 2), round(float(df[col].max()), 2)
+                if min_val != max_val:
+                    numeric_filters[col] = st.slider(f"{col}", min_val, max_val, (min_val, max_val))
+                else:
+                    st.write(f"{col} has a single value: {min_val}")
+                    numeric_filters[col] = (min_val, max_val)
 
         if cat_cols:
             st.markdown("**Categorical Filters**")
@@ -66,20 +79,25 @@ if df is not None and 'apply_filters' in locals() and apply_filters:
 
 # --- PAGE CONTENT ---
 if page == "Home":
-    st.title("🏠 Welcome to MapCortex")
-    from PIL import Image
-    img = Image.open(r"assets/pexels-pixabay-265087.jpg")
-    st.image(img, use_container_width=True)
+    st.title("🏠 Welcome to DataMap")
+    # Image path relative to app.py
+    img_path = os.path.join("assets", "pexels-pixabay-265087.jpg")
+    if os.path.exists(img_path):
+        img = Image.open(img_path)
+        st.image(img, use_container_width=True)
+    else:
+        st.warning("Home page image not found. Please place it in the `assets` folder.")
 
     st.markdown("""
     Interactive dashboard to visualize geospatial and numeric data.
 
     **Features**:
     - Maps with clustering & heatmaps
-    - Dynamic filters (numeric + categorical)
+    - Dynamic numeric & categorical filters
     - Charts & analytics
     - Dataset summary
     """)
+
     if df is not None:
         with st.expander("Preview Data (first 10 rows)", expanded=True):
             st.dataframe(df.head(10))
@@ -141,12 +159,12 @@ elif page == "Dataset Summary":
         st.info("Upload CSV to see summary.")
 
 elif page == "About / Help":
-    st.title("ℹ About MapCortex")
+    st.title("ℹ About DataMap")
     st.markdown("""
-    **MapCortex** is a Streamlit app for interactive geospatial & numeric data visualization.
+    **DataMap** is an interactive dashboard for geospatial and numeric data visualization.
 
-    - Upload CSV files
-    - Filter data dynamically
-    - Explore maps, heatmaps, charts, and summaries
+    - Upload CSV files and explore datasets
+    - Apply dynamic numeric and categorical filters
+    - Visualize data through maps, heatmaps, and interactive charts
+    - Quickly gain insights from your data
     """)
-
