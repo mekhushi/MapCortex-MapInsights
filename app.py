@@ -1,28 +1,25 @@
 import streamlit as st
 import pandas as pd
-import folium
-from folium.plugins import MarkerCluster, HeatMap
-from streamlit_folium import st_folium
 import plotly.express as px
 from PIL import Image
 import os
 
 # --- PAGE CONFIG ---
 st.set_page_config(
-    page_title="MapCortex",
+    page_title="DataMap",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # --- SIDEBAR ---
 st.sidebar.title("🗺 DataMap Dashboard")
-st.sidebar.markdown("Interactive data visualization with maps & charts")
+st.sidebar.markdown("Interactive data visualization with charts & dataset summary")
 st.sidebar.markdown("---")
 
 # Page navigation
 page = st.sidebar.selectbox(
     "📄 Select Page",
-    ["Home", "Map View", "Charts & Analytics", "Dataset Summary", "About / Help"]
+    ["Home", "Charts & Analytics", "Dataset Summary", "About / Help"]
 )
 
 # Dataset upload
@@ -62,7 +59,7 @@ if df is not None:
 
 st.sidebar.markdown("---")
 st.sidebar.subheader("ℹ About / Help")
-st.sidebar.info("Upload CSV → Filter → Visualize maps & charts")
+st.sidebar.info("Upload CSV → Filter → Visualize charts & dataset summary")
 
 # --- FILTER FUNCTION ---
 def filter_dataframe(df):
@@ -80,19 +77,17 @@ if df is not None and 'apply_filters' in locals() and apply_filters:
 # --- PAGE CONTENT ---
 if page == "Home":
     st.title("🏠 Welcome to DataMap")
-    # Image path relative to app.py
     img_path = os.path.join("assets", "pexels-pixabay-265087.jpg")
     if os.path.exists(img_path):
         img = Image.open(img_path)
         st.image(img, use_container_width=True)
     else:
-        st.warning("Home page image not found. Please place it in the `assets` folder.")
+        st.warning("Home page image not found. Place image in the `assets` folder.")
 
     st.markdown("""
-    Interactive dashboard to visualize geospatial and numeric data.
+    Interactive dashboard to visualize numeric data and gain insights.
 
     **Features**:
-    - Maps with clustering & heatmaps
     - Dynamic numeric & categorical filters
     - Charts & analytics
     - Dataset summary
@@ -101,26 +96,6 @@ if page == "Home":
     if df is not None:
         with st.expander("Preview Data (first 10 rows)", expanded=True):
             st.dataframe(df.head(10))
-
-elif page == "Map View":
-    st.title("🗺 Map View")
-    if df is not None:
-        if 'latitude' in df.columns and 'longitude' in df.columns:
-            map_center = [df['latitude'].mean(), df['longitude'].mean()]
-
-            st.subheader("Map with Marker Clustering")
-            m = folium.Map(location=map_center, zoom_start=5)
-            MarkerCluster(df[['latitude', 'longitude']].values.tolist()).add_to(m)
-            st_folium(m, width=900, height=500)
-
-            st.subheader("Heatmap")
-            hm = folium.Map(location=map_center, zoom_start=5)
-            HeatMap(df[['latitude', 'longitude']].values.tolist()).add_to(hm)
-            st_folium(hm, width=900, height=500)
-        else:
-            st.warning("Dataset must have 'latitude' and 'longitude' columns for maps.")
-    else:
-        st.info("Upload a CSV file to visualize maps.")
 
 elif page == "Charts & Analytics":
     st.title("📊 Charts & Analytics")
@@ -161,10 +136,10 @@ elif page == "Dataset Summary":
 elif page == "About / Help":
     st.title("ℹ About DataMap")
     st.markdown("""
-    **DataMap** is an interactive dashboard for geospatial and numeric data visualization.
+    **DataMap** is an interactive dashboard for numeric data visualization.
 
     - Upload CSV files and explore datasets
     - Apply dynamic numeric and categorical filters
-    - Visualize data through maps, heatmaps, and interactive charts
+    - Visualize data through interactive charts
     - Quickly gain insights from your data
     """)
