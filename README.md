@@ -8,7 +8,7 @@ An interactive dashboard for data analytics and geospatial visualization. Upload
 
 ## Problem Statement
 
-Analyzing and visualizing data, especially geospatial data, can be challenging and time-consuming. Existing tools often require specialized knowledge, complex setups, and are not always accessible to users with varying technical backgrounds. This creates a barrier to entry for many individuals and organizations looking to gain insights from their data.
+Analyzing and visualizing data can be challenging and time-consuming. Existing tools often require specialized knowledge, complex setups, and are not always accessible to users with varying technical backgrounds. This creates a barrier to entry for many individuals and organizations looking to gain insights from their data.
 
 ![](assets/pexels-rdne-7947663.jpg)
 
