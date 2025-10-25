@@ -4,25 +4,21 @@ import plotly.express as px
 from PIL import Image
 import os
 
-# --- PAGE CONFIG ---
 st.set_page_config(
     page_title="DataMap",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# --- SIDEBAR ---
 st.sidebar.title("🗺 DataMap Dashboard")
 st.sidebar.markdown("Interactive data visualization with charts & dataset summary")
 st.sidebar.markdown("---")
 
-# Page navigation
 page = st.sidebar.selectbox(
     "📄 Select Page",
     ["Home", "Charts & Analytics", "Dataset Summary", "About / Help"]
 )
 
-# Dataset upload
 st.sidebar.subheader("📂 Upload CSV")
 uploaded_file = st.sidebar.file_uploader("Choose CSV file", type=["csv"])
 df = None
@@ -30,7 +26,6 @@ if uploaded_file:
     df = pd.read_csv(uploaded_file)
     st.sidebar.success(f"Loaded {df.shape[0]} rows × {df.shape[1]} columns")
 
-# --- FILTERS ---
 numeric_filters = {}
 cat_filters = {}
 
@@ -61,7 +56,6 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("ℹ About / Help")
 st.sidebar.info("Upload CSV → Filter → Visualize charts & dataset summary")
 
-# --- FILTER FUNCTION ---
 def filter_dataframe(df):
     filtered_df = df.copy()
     for col, val in numeric_filters.items():
@@ -74,7 +68,6 @@ if df is not None and 'apply_filters' in locals() and apply_filters:
     df = filter_dataframe(df)
     st.success(f"Filtered data: {df.shape[0]} rows × {df.shape[1]} columns")
 
-# --- PAGE CONTENT ---
 if page == "Home":
     st.title("🏠 Welcome to DataMap")
     img_path = os.path.join("assets", "pexels-pixabay-265087.jpg")
@@ -143,3 +136,4 @@ elif page == "About / Help":
     - Visualize data through interactive charts
     - Quickly gain insights from your data
     """)
+
